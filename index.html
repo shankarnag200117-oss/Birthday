@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09070b">
+<title>Moments Birthday V5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap');
+:root{--bg:#09070b;--pink:#ef8eaa;--cream:#fff5e9;--muted:#cbbbc4}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:#fff}
+body{font-family:"DM Sans",sans-serif;overflow-x:hidden}button,input,textarea{font:inherit}button{cursor:pointer}
+.screen{display:none;min-height:100svh}.screen.active{display:flex}
+#builder{padding:22px 15px;align-items:center;justify-content:center;background:radial-gradient(circle at 50% -10%,#54283d,#09070b 60%)}
+.wrap{width:min(720px,100%)}.brand{text-align:center;letter-spacing:4px;font-size:11px;color:#efb2c4;margin:8px 0 26px}
+.card{background:#130e16f2;border:1px solid #ffffff1e;border-radius:28px;padding:24px;box-shadow:0 30px 100px #0009}
+.progress{display:flex;gap:5px;margin-bottom:24px}.progress i{height:3px;flex:1;border-radius:5px;background:#fff1}.progress i.on{background:var(--pink)}
+.k{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#efb2c4}
+h1{font:500 clamp(48px,11vw,80px)/.88 "Cormorant Garamond",serif;margin:12px 0 20px}
+.story{font:500 clamp(22px,5vw,34px)/1.3 "Cormorant Garamond",serif;max-width:650px}
+.muted{color:var(--muted);line-height:1.6}.field{margin:17px 0}.field label{display:block;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:#c5b2bd;margin-bottom:7px}
+input,textarea{width:100%;padding:14px;border-radius:13px;border:1px solid #fff2;background:#08060a;color:#fff;outline:0}textarea{min-height:140px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.btn{border:1px solid #fff2;border-radius:999px;padding:14px 20px;background:#ffffff10;color:#fff;font-weight:700}.main{border:0;background:linear-gradient(135deg,#f09ab3,#c85e86);box-shadow:0 15px 35px #d56d8c44}
+.cakes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pick{border:1px solid #fff2;border-radius:20px;padding:18px 8px;background:#fff0;color:#fff}.pick.selected{border-color:var(--pink);background:#ef8eaa18}.pick b{display:block;font-size:52px;margin-bottom:6px}
+.rr{display:flex;gap:8px;margin:9px 0}.rr input{flex:1}.del{width:45px}
+#craft{align-items:center;justify-content:center;text-align:center;padding:25px;background:radial-gradient(circle,#55283f,#09070b 67%)}
+.orb{width:130px;height:130px;border:1px solid #fff2;border-radius:50%;display:grid;place-items:center;font-size:55px;margin:auto;animation:pulse 2s infinite}@keyframes pulse{50%{transform:scale(1.07);box-shadow:0 0 100px #ef8eaa55}}
+#experience{position:relative;min-height:100svh;background:#09070b;overflow:hidden}
+.scene{position:absolute;inset:0;width:100%;height:100svh;min-height:100svh;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;overflow:hidden;padding:50px 20px 60px;background:radial-gradient(circle at 50% 10%,#54283d,#0d0810 58%,#050408);animation:sceneIn .55s ease}
+.scene.active{display:flex}@keyframes sceneIn{from{opacity:0;transform:scale(1.015)}to{opacity:1;transform:none}}
+.name{font:500 clamp(66px,18vw,150px)/.75 "Cormorant Garamond",serif;margin:25px 0;text-shadow:0 25px 70px #000}
+.continue{margin-top:28px}
+#bowStage{position:relative;width:min(650px,100%);height:300px;touch-action:none;user-select:none}
+.bowShape{position:absolute;left:12%;top:25px;width:175px;height:235px;border-right:5px solid #e8d0c2;border-radius:50%;transform:rotate(-12deg)}
+.bowString{position:absolute;left:53%;top:25px;width:2px;height:238px;background:#f0d9cf;transform:rotate(-18deg);transform-origin:top}
+.arrowShaft{position:absolute;left:27%;top:145px;width:285px;height:4px;background:#f3dfd5;transform:rotate(-12deg);transform-origin:left;box-shadow:0 0 10px #fff4}
+.arrowShaft:after{content:"";position:absolute;right:-2px;top:-8px;border-left:18px solid #f3dfd5;border-top:10px solid transparent;border-bottom:10px solid transparent}
+#bowStage.shooting .arrowShaft{animation:shoot .6s cubic-bezier(.2,.8,.2,1) forwards}@keyframes shoot{to{transform:translateX(400px) rotate(-12deg);opacity:0}}
+#cakeIcon{font-size:130px;line-height:1;user-select:none;filter:drop-shadow(0 25px 35px #0008);transition:.2s}
+#cakeIcon.wish{transform:scale(1.08)}#flames{font-size:30px;letter-spacing:7px;margin-top:-34px}
+.balloonArea{position:relative;width:min(620px,100%);height:400px;margin:5px auto;overflow:hidden;flex:none}
+.balloon{position:absolute;width:108px;height:140px;border:0;border-radius:54% 54% 50% 50%;background:radial-gradient(circle at 32% 24%,#fff9,#fff0 19%),linear-gradient(145deg,#ee9ab7,#a2476d);color:#fff;font-size:12px;font-weight:700;box-shadow:0 20px 40px #0008;transition:opacity .25s,transform .45s;will-change:transform}
+.balloon:after{content:"";position:absolute;left:50%;bottom:-48px;width:1px;height:52px;background:#ffffff45}
+.balloon.popped{opacity:0;transform:scale(1.8) rotate(30deg);pointer-events:none}
+#balloonMessage{height:58px;min-height:58px;display:flex;align-items:center;justify-content:center;font:500 28px "Cormorant Garamond",serif;color:#ffdce7;opacity:0;transform:translateY(8px);transition:.35s}
+#balloonMessage.visible{opacity:1;transform:none}
+.memory{width:min(650px,100%)}.memoryPhoto img{width:100%;max-height:61svh;object-fit:cover;border-radius:25px;box-shadow:0 30px 75px #0008}.caption{font:500 25px "Cormorant Garamond",serif;margin-top:12px}.counter{font-size:11px;color:#bcaab5;margin-top:8px}
+.envelope{width:min(500px,100%);height:300px;background:#ead9c0;position:relative;box-shadow:0 30px 80px #0008;cursor:pointer}.envelope:before{content:"";position:absolute;inset:0;background:#f5e8d3;clip-path:polygon(0 0,50% 56%,100% 0)}
+.seal{position:absolute;z-index:2;left:50%;top:52%;transform:translate(-50%,-50%);width:70px;height:70px;border-radius:50%;background:#9d3d50;display:grid;place-items:center;color:#f9ddc8;font-size:27px;box-shadow:0 8px 25px #0005}
+.paper{display:none;width:min(610px,100%);min-height:400px;padding:32px;background:var(--cream);color:#3c2930;text-align:left;box-shadow:0 25px 80px #0009}.paper.open{display:block;animation:paperIn .7s ease}@keyframes paperIn{from{opacity:0;transform:translateY(30px) rotate(-2deg)}to{opacity:1;transform:none}}.paper p{font:400 21px/1.8 "Cormorant Garamond",serif;white-space:pre-wrap}
+.final h1{font-size:clamp(58px,15vw,120px)}
+#musicControl{position:fixed;right:14px;top:14px;z-index:200;display:none;border:1px solid #fff3;background:#0009;color:#fff;border-radius:999px;padding:10px 14px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:300;overflow:hidden}.conf{position:absolute;width:8px;height:14px;animation:fall 3.2s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(900deg);opacity:0}}
+@media(max-width:550px){.row,.cakes{grid-template-columns:1fr}.balloon{width:90px;height:118px}.balloonArea{height:365px}.bowShape{left:5%}.arrowShaft{left:21%;width:250px}}
+</style>
+</head>
+<body>
+
+<section id="builder" class="screen active">
+  <div class="wrap">
+    <div class="brand">MOMENTS • BIRTHDAY</div>
+    <div class="card">
+      <div class="progress" id="progress"></div>
+      <div id="form"></div>
+    </div>
+  </div>
+</section>
+
+<section id="craft" class="screen">
+  <div class="wrap" style="text-align:center"><div class="orb">🎁</div><h1>Making something<br>just for them…</h1><p class="muted">Folding the letter · lighting the candles · arranging the memories</p></div>
+</section>
+
+<section id="experience" class="screen">
+  <div id="scenes"></div>
+</section>
+
+<button id="musicControl" type="button">♪ Music</button>
+<audio id="audio" loop preload="auto"></audio>
+<div id="confetti"></div>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const state = {
+  to:"", from:"", date:"", cake:"classic",
+  reasons:["Your smile","The way you care","Our ridiculous conversations","You make ordinary days special"],
+  photos:[], letter:"", musicUrl:"", musicData:""
+};
+let step=1, memoryIndex=0;
+
+function esc(v){
+  return String(v ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+}
+function readFile(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>resolve(r.result);
+    r.onerror=()=>reject(r.error);
+    r.readAsDataURL(file);
+  });
+}
+function render(){
+  $("progress").innerHTML=[1,2,3,4,5].map(i=>`<i class="${i<=step?"on":""}"></i>`).join("");
+  $("form").innerHTML=formHTML(step);
+  bindForm(step);
+}
+function formHTML(n){
+ if(n===1)return `<div class="k">01 • The person</div><h1>Who is this<br>little world for?</h1><p class="muted">Tell us who deserves the surprise.</p>
+ <div class="row"><div class="field"><label>Their name</label><input id="toInput" value="${esc(state.to)}" placeholder="Ananya"></div>
+ <div class="field"><label>Your name</label><input id="fromInput" value="${esc(state.from)}" placeholder="Rahul"></div></div>
+ <div class="field"><label>Birthday</label><input id="dateInput" type="date" value="${esc(state.date)}"></div>
+ <div class="actions"><button class="btn main" id="nextBtn">Continue →</button></div>`;
+ if(n===2)return `<div class="k">02 • The cake</div><h1>Pick their<br>birthday cake.</h1><p class="muted">This becomes the first thing they interact with.</p>
+ <div class="cakes">${[["classic","🎂"],["heart","💗"],["cup","🧁"]].map(a=>`<button class="pick ${state.cake===a[0]?"selected":""}" data-cake="${a[0]}"><b>${a[1]}</b>${a[0]}</button>`).join("")}</div>
+ <div class="actions"><button class="btn" id="backBtn">← Back</button><button class="btn main" id="nextBtn">Continue →</button></div>`;
+ if(n===3)return `<div class="k">03 • Hidden messages</div><h1>Put little reasons<br>inside balloons.</h1><p class="muted">Each balloon reveals its own message.</p>
+ <div id="reasonList">${state.reasons.map(r=>`<div class="rr"><input class="reason" value="${esc(r)}"><button class="btn del" type="button">×</button></div>`).join("")}</div>
+ <div class="actions"><button class="btn" id="addReason">+ Add</button><button class="btn" id="backBtn">← Back</button><button class="btn main" id="nextBtn">Continue →</button></div>`;
+ if(n===4)return `<div class="k">04 • Memories</div><h1>Choose the moments<br>worth keeping.</h1><p class="muted">Add up to five photos.</p>
+ <div class="field"><label>Photos</label><input id="photoInput" type="file" accept="image/*" multiple></div><p class="muted" id="photoStatus">${state.photos.length?state.photos.length+" photo(s) selected.":"No photos selected yet."}</p>
+ <div class="actions"><button class="btn" id="backBtn">← Back</button><button class="btn main" id="nextBtn">Continue →</button></div>`;
+ return `<div class="k">05 • The letter</div><h1>Say the thing<br>you can't shorten.</h1>
+ <div class="field"><label>Birthday letter</label><textarea id="letterInput" maxlength="1800" placeholder="Happy birthday...">${esc(state.letter)}</textarea></div>
+ <div class="field"><label>Music URL (direct MP3 / OGG)</label><input id="musicUrlInput" value="${esc(state.musicUrl)}" placeholder="https://example.com/song.mp3"></div>
+ <div class="field"><label>Or choose MP3 / OGG from your phone</label><input id="musicFileInput" type="file" accept="audio/mpeg,audio/ogg,.mp3,.ogg"></div>
+ <p class="muted" id="musicStatus">${state.musicData?"Music file selected.":"Choose a URL or an audio file."}</p>
+ <p class="muted">On Android, music begins after the recipient's first tap because Chrome blocks unsolicited autoplay.</p>
+ <div class="actions"><button class="btn" id="backBtn">← Back</button><button class="btn main" id="createBtn">Create their surprise ✨</button></div>`;
+}
+function bindForm(n){
+ if(n===1){
+  $("nextBtn").onclick=()=>{state.to=$("toInput").value.trim()||"Birthday Star";state.from=$("fromInput").value.trim()||"Someone who loves you";state.date=$("dateInput").value;step=2;render()};
+ }
+ if(n===2){
+  document.querySelectorAll("[data-cake]").forEach(b=>b.onclick=()=>{state.cake=b.dataset.cake;render()});
+  $("backBtn").onclick=()=>{step=1;render()};$("nextBtn").onclick=()=>{step=3;render()};
+ }
+ if(n===3){
+  document.querySelectorAll(".del").forEach(b=>b.onclick=()=>b.parentElement.remove());
+  $("addReason").onclick=()=>{const d=document.createElement("div");d.className="rr";d.innerHTML='<input class="reason" placeholder="Something only you notice"><button class="btn del" type="button">×</button>';d.querySelector(".del").onclick=()=>d.remove();$("reasonList").appendChild(d)};
+  $("backBtn").onclick=()=>{saveReasons();step=2;render()};$("nextBtn").onclick=()=>{saveReasons();step=4;render()};
+ }
+ if(n===4){
+  $("photoInput").onchange=async e=>{state.photos=[];for(const f of [...e.target.files].slice(0,5))state.photos.push({src:await readFile(f),caption:f.name.replace(/\.[^.]+$/,"").replaceAll("_"," ")});$("photoStatus").textContent=state.photos.length+" photo(s) selected."};
+  $("backBtn").onclick=()=>{step=3;render()};$("nextBtn").onclick=()=>{step=5;render()};
+ }
+ if(n===5){
+  $("musicFileInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;state.musicData=await readFile(f);$("musicStatus").textContent="Music file selected: "+f.name};
+  $("backBtn").onclick=()=>{step=4;render()};
+  $("createBtn").onclick=createExperience;
+ }
+}
+function saveReasons(){state.reasons=[...document.querySelectorAll(".reason")].map(x=>x.value.trim()).filter(Boolean)}
+async function createExperience(){
+ try{
+  state.letter=$("letterInput").value.trim()||"I hope this year gives you beautiful moments and all the happiness you deserve.";
+  state.musicUrl=$("musicUrlInput").value.trim();
+  if(state.musicUrl)state.musicData="";
+  $("builder").classList.remove("active");$("craft").classList.add("active");
+  setTimeout(launchExperience,1600);
+ }catch(e){console.error("Create experience error",e);showBuilderError("Something went wrong while preparing the surprise. Please try again.");}
+}
+function showBuilderError(msg){
+ let old=$("builderError");if(old)old.remove();
+ const p=document.createElement("p");p.id="builderError";p.className="muted";p.style.textAlign="center";p.textContent=msg;$("form").appendChild(p);
+}
+function cakeEmoji(){return state.cake==="heart"?"💗":state.cake==="cup"?"🧁":"🎂"}
+function launchExperience(){
+ $("craft").classList.remove("active");$("experience").classList.add("active");
+ buildScenes();prepareAudio();showScene(0);
+}
+function prepareAudio(){
+ const src=state.musicUrl||state.musicData;
+ const btn=$("musicControl"),audio=$("audio");
+ if(!src){btn.style.display="none";return}
+ audio.src=src;audio.load();btn.style.display="block";
+}
+function startAudio(){
+ const audio=$("audio");if(!audio.src)return;
+ audio.play().then(()=>{$("musicControl").textContent="Ⅱ Music"}).catch(()=>{$("musicControl").textContent="♪ Music"});
+}
+function buildScenes(){
+ let h=`<section class="scene active" id="scene0"><div class="k">A little surprise</div><div class="name">${esc(state.to)}</div><div class="story">Someone made something here that only makes sense if you're you.</div><button class="btn main continue" id="begin">Begin ✨</button></section>`;
+ h+=`<section class="scene" id="scene1"><div class="k">Pull the string</div><div class="story">Aim the arrow at your surprise.</div><div id="bowStage"><div class="bowShape"></div><div class="bowString"></div><div class="arrowShaft"></div><button class="btn main" id="shoot">Pull & release 🏹</button></div><p class="muted">Tap the button to release the arrow.</p></section>`;
+ h+=`<section class="scene" id="scene2"><div class="k">For your birthday</div><div class="story">Make a wish before the candles disappear.</div><div id="cakeIcon">${cakeEmoji()}</div><div id="flames">🔥 🔥 🔥</div><button class="btn main continue" id="wish">Make my wish ✨</button></section>`;
+ h+=`<section class="scene" id="scene3"><div class="k">Little things</div><div class="story">Pop a balloon. Its message appears below.</div><div class="balloonArea" id="balloonArea"></div><div id="balloonMessage"></div><button class="btn main continue" id="balloonNext">Continue →</button></section>`;
+ const hasPhotos=state.photos.length>0;
+ if(hasPhotos)h+=`<section class="scene" id="scene4"><div class="k">Memories</div><div class="story">A few moments I would choose again.</div><div class="memory" id="memory"></div><button class="btn continue" id="memoryNext">Next memory →</button></section>`;
+ const letterScene=hasPhotos?5:4,finalScene=letterScene+1;
+ h+=`<section class="scene" id="scene${letterScene}"><div class="k">For you</div><div class="story">There's one thing left.</div><div class="envelope" id="envelope"><div class="seal">✦</div></div><p class="muted" id="envelopeHint">Tap the seal to open your letter.</p><div class="paper" id="paper"><div style="font:11px system-ui;letter-spacing:2px;text-transform:uppercase;color:#a36b7d">For ${esc(state.to)}</div><p>${esc(state.letter)}</p><div style="text-align:right;font-weight:bold">— ${esc(state.from)}</div></div><button class="btn main continue" id="letterNext">Keep this moment →</button></section>`;
+ h+=`<section class="scene final" id="scene${finalScene}"><div class="k">Happy Birthday</div><h1>For ${esc(state.to)}.<br>With love.</h1><div class="story">May the next year give you more moments worth remembering than you can count.</div><button class="btn main continue" id="again">Celebrate again 🎉</button></section>`;
+ $("scenes").innerHTML=h;
+ $("begin").onclick=()=>{startAudio();showScene(1)};
+ $("shoot").onclick=arrowShoot;
+ $("wish").onclick=makeWish;
+ setupBalloons();
+ $("balloonNext").onclick=()=>showScene(hasPhotos?4:letterScene);
+ if(hasPhotos)setupMemories();
+ $("envelope").onclick=openLetter;
+ $("letterNext").onclick=()=>showScene(finalScene);
+ $("again").onclick=()=>burst(100);
+}
+function showScene(n){document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));const s=$("scene"+n);if(s)s.classList.add("active");window.scrollTo(0,0)}
+function arrowShoot(){const stage=$("bowStage");if(stage.dataset.shot)return;stage.dataset.shot="1";stage.classList.add("shooting");setTimeout(()=>showScene(2),650)}
+function makeWish(){$("cakeIcon").classList.add("wish");$("flames").textContent="✨ ✨ ✨";burst(45);setTimeout(()=>showScene(3),750)}
+function setupBalloons(){
+ const area=$("balloonArea"),msg=$("balloonMessage");
+ const reasons=(state.reasons.length?state.reasons:["You matter to me.","Your smile.","Our memories.","Simply you."]).slice(0,6);
+ const positions=[[7,7],[39,0],[70,8],[20,48],[52,44],[76,52]];
+ reasons.forEach((reason,i)=>{
+  const b=document.createElement("button");b.className="balloon";b.type="button";b.textContent="POP ME";
+  b.style.left=positions[i][0]+"%";b.style.top=positions[i][1]+"%";
+  b.onclick=()=>{if(b.classList.contains("popped"))return;b.classList.add("popped");msg.textContent=reason;msg.classList.add("visible");burst(12)};
+  area.appendChild(b);
+ });
+}
+function setupMemories(){
+ const box=$("memory");
+ box.innerHTML=state.photos.map((p,i)=>`<div class="memoryPhoto" style="display:${i===0?"block":"none"}"><img src="${p.src}" alt="Memory ${i+1}"><div class="caption">${esc(p.caption)}</div></div>`).join("")+`<div class="counter" id="memoryCounter">1 / ${state.photos.length}</div>`;
+ $("memoryNext").onclick=()=>{
+  const photos=[...box.querySelectorAll(".memoryPhoto")];if(!photos.length)return;
+  photos[memoryIndex].style.display="none";memoryIndex=(memoryIndex+1)%photos.length;photos[memoryIndex].style.display="block";$("memoryCounter").textContent=(memoryIndex+1)+" / "+photos.length;
+ };
+}
+function openLetter(){$("envelope").style.display="none";$("envelopeHint").style.display="none";$("paper").classList.add("open");burst(30)}
+$("musicControl").onclick=()=>{const a=$("audio");if(!a.src)return;if(a.paused){startAudio()}else{a.pause();$("musicControl").textContent="♪ Music"}};
+function burst(n=60){const c=$("confetti");for(let i=0;i<n;i++){const p=document.createElement("i");p.className="conf";p.style.left=Math.random()*100+"%";p.style.top="-20px";p.style.background=["#ef91ac","#ffd58c","#fff","#b99ce7"][Math.floor(Math.random()*4)];p.style.animationDelay=Math.random()*.65+"s";c.appendChild(p);setTimeout(()=>p.remove(),3600)}}
+window.addEventListener("error",e=>console.error("Moments runtime error:",e.error||e.message));
+render();
+</script>
+</body>
+</html>
